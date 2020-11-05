@@ -115,6 +115,16 @@ void* CStringEnd(void* ptr)
     return NULL;
 }
 
+void* CStringRBegin(void* ptr)
+{
+    return CStringEnd(ptr);
+}
+
+void* CStringREnd(void* ptr)
+{
+    return CStringBegin(ptr);
+}
+
 size_t CStringEqual(void* ptr, const char* str)
 {
     if(ptr != NULL && str != NULL)
@@ -175,4 +185,13 @@ void CStringStaticIncreaseCapacity(void* ptr)
         free(temp_str);
         temp_str = NULL;
     }
+}
+
+size_t CStringEmpty(void* ptr)
+{
+    if(ptr != NULL)
+    {
+        return ((DENX_CString*)(ptr))->length;
+    }
+    return 1;
 }

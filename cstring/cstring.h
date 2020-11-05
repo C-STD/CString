@@ -30,10 +30,19 @@ void* CStringBegin(void*);
 // Returns a pointer to the last character of the CString.
 void* CStringEnd(void*);
 
+// Returns a pointer to the last character of the CString(reversed beginning).
+void* CStringRBegin(void*);
+
+// Returns a pointer to the first character of the CString(reversed ending).
+void* CStringREnd(void*);
+
 // Copies the content of the string passed as argument to the CString. Returns the number of bytes copied.
 size_t CStringEqual(void*, const char*);
 
 // Returns the actual string of the CString object.
 const char* CStringData(void*);
+
+// Check if the CString is empty. Returns 0(not empty) or 1(empty). If CString is `NULL`, 1 is returned.
+size_t CStringEmpty(void*);
 
 #endif
