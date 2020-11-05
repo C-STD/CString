@@ -33,6 +33,7 @@ void* CStringEnd(void*);
 // Copies the content of the string passed as argument to the CString. Returns the number of bytes copied.
 size_t CStringEqual(void*, const char*);
 
+// Returns the actual string of the CString object.
 const char* CStringData(void*);
 
 #endif
