@@ -18,8 +18,8 @@
 - [X] `std::string::front` > `CStringFront`
 - [X] `std::string::back` > `CStringBack`
 - [ ] `std::string::max_size` > `CStringMaxSize`
-- [ ] `std::string::reserve` > `CStringReserve`
-- [ ] `std::string::shrink_to_fit` > `CStringShrinkToFit`
+- [X] `std::string::reserve` > `CStringReserve`
+- [X] `std::string::shrink_to_fit` > `CStringShrinkToFit`
 - [ ] `std::string::insert` > `CStringInsert`
 - [ ] `std::string::erase` > `CStringErase`
 - [ ] `std::string::push_back` > `CStringPushBack`

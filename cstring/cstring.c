@@ -230,3 +230,81 @@ const size_t CStringMaxSize()
 {
     return 0;
 }
+
+size_t CStringReserve(void* ptr, size_t new_cap)
+{
+    if(ptr == NULL)
+    {
+        return 0;
+    }
+
+    // shrink request
+    if(((DENX_CString*)(ptr))->capacity > new_cap)
+    {
+        char* temp_str = (char)malloc(new_cap);
+        memcpy_s(temp_str, new_cap, ((DENX_CString*)(ptr))->string, ((DENX_CString*)(ptr))->capacity);
+
+        free(((DENX_CString*)(ptr))->string);
+        ((DENX_CString*)(ptr))->string = NULL;
+        ((DENX_CString*)(ptr))->string = (char*)malloc(new_cap);
+        memcpy_s(((DENX_CString*)(ptr))->string, new_cap, temp_str, new_cap);
+        ((DENX_CString*)(ptr))->capacity = new_cap;
+        return new_cap;
+    }
+    // shrink-to-fit request
+    else if(((DENX_CString*)(ptr))->size > new_cap)
+    {
+        CStringShrinkToFit(ptr);
+        return ((DENX_CString*)(ptr))->capacity;
+    }
+    else
+    {
+        if(((DENX_CString*)(ptr))->capacity == new_cap)
+        {
+            return new_cap;
+        }
+
+        // Expanding the string.
+        // NOTE: This is the same procedure as if the capacity of the CString is greater than the new capacity.
+        //       So we could just use the first if's procedure instead of copying it here.
+        char* temp_str = (char)malloc(new_cap);
+        memcpy_s(temp_str, new_cap, ((DENX_CString*)(ptr))->string, ((DENX_CString*)(ptr))->capacity);
+
+        free(((DENX_CString*)(ptr))->string);
+        ((DENX_CString*)(ptr))->string = NULL;
+        ((DENX_CString*)(ptr))->string = (char*)malloc(new_cap);
+        memcpy_s(((DENX_CString*)(ptr))->string, new_cap, temp_str, new_cap);
+        ((DENX_CString*)(ptr))->capacity = new_cap;
+        return new_cap;
+    }
+    
+    return 0;
+}
+
+size_t CStringShrinkToFit(void* ptr)
+{
+    if(ptr == NULL)
+    {
+        return 0;
+    }
+
+    if(((DENX_CString*)(ptr))->capacity == ((DENX_CString*)(ptr))->size)
+    {
+        return 0;
+    }
+
+    size_t new_cap = ((DENX_CString*)(ptr))->size;
+    size_t old_cap = ((DENX_CString*)(ptr))->capacity;
+
+    char* temp_str = (char*)malloc(new_cap);
+    memcpy_s(temp_str, new_cap, ((DENX_CString*)(ptr))->string, ((DENX_CString*)(ptr))->capacity);
+
+    free(((DENX_CString*)(ptr))->string);
+    ((DENX_CString*)(ptr))->string = NULL;
+    ((DENX_CString*)(ptr))->string = (char*)malloc(new_cap);
+    memcpy_s(((DENX_CString*)(ptr))->string, new_cap, temp_str, new_cap);
+
+    ((DENX_CString*)(ptr))->capacity = new_cap;
+
+    return (old_cap - new_cap); 
+}

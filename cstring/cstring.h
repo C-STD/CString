@@ -54,4 +54,13 @@ char* CStringBack(void*);
 // Returns the maximum number of characters a CString can hold. For the time being, this function will return 0. At the moment I don't know where could I find the maximum number of characters of a string in C.
 const size_t CStringMaxSize();
 
+// Reserves the amount of bytes specified. Returns the new capacity of the CString.
+// - If the amount of bytes to be reserved are less then `CStringCapacity`, this is a shrink request.
+// - If the amount of bytes to be reserved are less then `CStringSize`, this is a `shrink-to-fit` request.
+size_t CStringReserve(void*, size_t);
+
+// Shrinks the CString to fit. This will make the capacity of the CString match the size of the CString. Returns the number of bytes shrinked.
+// If the size of the CString already matches the capacity of the CString, nothing is done(0 is returned).
+size_t CStringShrinkToFit(void*);
+
 #endif
