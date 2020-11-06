@@ -135,6 +135,9 @@ size_t CStringEqual(void* ptr, const char* str)
         {
             ((DENX_CString*)(ptr))->string = (char*)malloc(str_len);
             memset(((DENX_CString*)(ptr))->string, 0, str_len);
+
+            ((DENX_CString*)(ptr))->begin = (void*)((DENX_CString*)(ptr))->string;
+            ((DENX_CString*)(ptr))->end = (void*)((DENX_CString*)(ptr))->string + str_len;
         }
 
         strcpy_s(((DENX_CString*)(ptr))->string, str_len + 1, str);
@@ -216,7 +219,7 @@ char* CStringBack(void* ptr)
     {
         if(((DENX_CString*)(ptr))->string != NULL && ((DENX_CString*)(ptr))->size > 0)
         {
-            return (char*)CStringBegin(ptr);
+            return (char*)CStringEnd(ptr);
         }
     }
     return NULL;
