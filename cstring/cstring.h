@@ -45,4 +45,13 @@ const char* CStringData(void*);
 // Check if the CString is empty. Returns 0(not empty) or 1(empty). If CString is `NULL`, 1 is returned.
 size_t CStringEmpty(void*);
 
+// Returns a pointer to the first character of the CString or NULL.
+char* CStringFront(void*);
+
+// Returns a pointer to the last character of the CString or NULL.
+char* CStringBack(void*);
+
+// Returns the maximum number of characters a CString can hold. For the time being, this function will return 0. At the moment I don't know where could I find the maximum number of characters of a string in C.
+const size_t CStringMaxSize();
+
 #endif

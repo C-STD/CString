@@ -195,3 +195,35 @@ size_t CStringEmpty(void* ptr)
     }
     return 1;
 }
+
+// Returns a pointer to the first character of the CString or NULL.
+char* CStringFront(void* ptr)
+{
+    if(ptr != NULL)
+    {
+        if(((DENX_CString*)(ptr))->string != NULL && ((DENX_CString*)(ptr))->size > 0)
+        {
+            return (char*)CStringBegin(ptr);
+        }
+    }
+    return NULL;
+}
+
+// Returns a pointer to the last character of the CString or NULL.
+char* CStringBack(void* ptr)
+{
+    if(ptr != NULL)
+    {
+        if(((DENX_CString*)(ptr))->string != NULL && ((DENX_CString*)(ptr))->size > 0)
+        {
+            return (char*)CStringBegin(ptr);
+        }
+    }
+    return NULL;
+}
+
+// Returns the maximum number of characters a CString can hold.
+const size_t CStringMaxSize()
+{
+    return 0;
+}

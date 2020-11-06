@@ -15,8 +15,8 @@
 - [X] `std::string::end` > `CStringEnd`
 - [X] `std::string::rbegin` > `CStringRBegin`
 - [X] `std::string::rend` > `CStringREnd`
-- [ ] `std::string::front` > `CStringFront`
-- [ ] `std::string::back` > `CStringBack`
+- [X] `std::string::front` > `CStringFront`
+- [X] `std::string::back` > `CStringBack`
 - [ ] `std::string::max_size` > `CStringMaxSize`
 - [ ] `std::string::reserve` > `CStringReserve`
 - [ ] `std::string::shrink_to_fit` > `CStringShrinkToFit`

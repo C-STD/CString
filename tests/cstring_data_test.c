@@ -31,5 +31,12 @@ int main()
     capacity = CStringCapacity(mystr);
     assert(capacity == 21);
 
+    // This test fails.
+    // Reason: We're not updating `CString::begin` and `CString::end`.
+    // TODO: Update `CString::begin` and `CString::end` in `CStringEqual` function.
+    assert(CStringFront(mystr) != NULL);
+    assert(CStringBack(mystr) != NULL);
+    assert(CStringMaxSize() == 0);
+
     assert(CStringDestroy(mystr) == 0);
 }
