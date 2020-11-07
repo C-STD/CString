@@ -26,13 +26,7 @@ void CStringStaticIncreaseCapacity(void*);
 
 void* CStringCreate()
 {
-    denx_cstring* string = (denx_cstring*)(malloc(sizeof(denx_cstring)));
-    string->string = NULL;
-    string->length = 0;
-    string->size = 0;
-    string->capacity = 0;
-    string->begin = NULL;
-    string->end = NULL;
+    denx_cstring* string = (denx_cstring*)calloc(1, sizeof(denx_cstring));
     return (void*)string;
 }
 
@@ -133,17 +127,17 @@ size_t CStringEqual(void* ptr, const char* str)
 
         if(CSTRING_REF(ptr)->string == NULL)
         {
-            CSTRING_REF(ptr)->string = (char*)malloc(str_len);
-            memset(CSTRING_REF(ptr)->string, 0, str_len);
+            CSTRING_REF(ptr)->string = (char*)calloc(1, str_len);
 
             CSTRING_REF(ptr)->begin = (void*)CSTRING_REF(ptr)->string;
             CSTRING_REF(ptr)->end = (void*)CSTRING_REF(ptr)->string + str_len;
         }
 
         strcpy_s(CSTRING_REF(ptr)->string, str_len + 1, str);
-        CSTRING_REF(ptr)->length = CSTRING_LEN(ptr);
+        CSTRING_REF(ptr)->length = str_len;
 
-        if(CSTRING_REF(ptr)->length > CSTRING_REF(ptr)->size)
+        if(CSTRING_REF(ptr)->length > CSTRING_REF(ptr)->size &&
+           CSTRING_REF(ptr)->capacity < CSTRING_REF(ptr)->length)
         {
             CSTRING_REF(ptr)->size = CSTRING_REF(ptr)->length + 1;
             CStringStaticIncreaseCapacity(ptr); // Increase the capacity of the string.
@@ -241,14 +235,25 @@ size_t CStringReserve(void* ptr, size_t new_cap)
     // shrink request
     if(CSTRING_REF(ptr)->capacity > new_cap)
     {
-        char* temp_str = (char)malloc(new_cap);
-        memcpy_s(temp_str, new_cap, CSTRING_REF(ptr)->string, CSTRING_REF(ptr)->capacity);
+        char* temp_str = (char*)calloc(1, new_cap);
+        memcpy(temp_str, CSTRING_REF(ptr)->string, new_cap);
 
         free(CSTRING_REF(ptr)->string);
         CSTRING_REF(ptr)->string = NULL;
-        CSTRING_REF(ptr)->string = (char*)malloc(new_cap);
-        memcpy_s(CSTRING_REF(ptr)->string, new_cap, temp_str, new_cap);
+
+        CSTRING_REF(ptr)->string = (char*)calloc(1, new_cap);
+        memcpy(CSTRING_REF(ptr)->string, temp_str, new_cap);
         CSTRING_REF(ptr)->capacity = new_cap;
+
+        // we also need to check if the last character is is not a `\0`.
+        // otherwise(possibly), when printing the string, we would go behond the size of the string.
+        if(CSTRING_REF(ptr)->string[new_cap - 1] != '\0')
+        {
+            CSTRING_REF(ptr)->string[new_cap - 1] = '\0';
+        }
+        CSTRING_REF(ptr)->size = CSTRING_LEN(ptr) + 1;
+        CSTRING_REF(ptr)->length = CSTRING_LEN(ptr);
+
         return new_cap;
     }
     // shrink-to-fit request
@@ -265,15 +270,14 @@ size_t CStringReserve(void* ptr, size_t new_cap)
         }
 
         // Expanding the string.
-        // NOTE: This is the same procedure as if the capacity of the CString is greater than the new capacity.
-        //       So we could just use the first if's procedure instead of copying it here.
-        char* temp_str = (char)malloc(new_cap);
-        memcpy_s(temp_str, new_cap, CSTRING_REF(ptr)->string, CSTRING_REF(ptr)->capacity);
+        char* temp_str = (char*)calloc(1, new_cap);
+        memcpy(temp_str, CSTRING_REF(ptr)->string, CSTRING_REF(ptr)->capacity);
 
         free(CSTRING_REF(ptr)->string);
         CSTRING_REF(ptr)->string = NULL;
-        CSTRING_REF(ptr)->string = (char*)malloc(new_cap);
-        memcpy_s(CSTRING_REF(ptr)->string, new_cap, temp_str, new_cap);
+        CSTRING_REF(ptr)->string = (char*)calloc(1, new_cap);
+
+        memcpy(CSTRING_REF(ptr)->string, temp_str, new_cap);
         CSTRING_REF(ptr)->capacity = new_cap;
         return new_cap;
     }
