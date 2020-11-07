@@ -308,3 +308,82 @@ size_t CStringShrinkToFit(void* ptr)
 
     return (old_cap - new_cap); 
 }
+
+// TODO: If the index is 0, nothing is inserted(NEEDS IMPLEMENTATION)
+// TODO: If the index is greater than 0, a 'Segmentation-Fault' is thrown.
+// TODO: Size and length must be updated.
+size_t CStringInsert(void* ptr, char c, size_t indx)
+{
+     if(ptr == NULL)
+     {
+         return 1;
+     }
+
+    // Here we can use `CStringPushBack` instead.
+    if(((DENX_CString*)(ptr))->string == NULL)
+    {
+        // allocate at least 1 byte.
+        ((DENX_CString*)(ptr))->string = (char*)malloc(2);
+        if(((DENX_CString*)(ptr))->string == NULL)
+        {
+            return 1;
+        }
+
+        ((DENX_CString*)(ptr))->length = 1;
+        ((DENX_CString*)(ptr))->size = 2;
+        ((DENX_CString*)(ptr))->capacity = 2;
+        ((DENX_CString*)(ptr))->string[0] = c;
+        ((DENX_CString*)(ptr))->string[1] = '\0';
+        return 0;
+    }
+
+    // Actually, here we could use `CStringPushBack`.
+    if(indx >= ((DENX_CString*)(ptr))->length)
+    {
+        CStringStaticIncreaseCapacity(ptr);
+        ((DENX_CString*)(ptr))->string[((DENX_CString*)(ptr))->length] = c;
+        ((DENX_CString*)(ptr))->string[((DENX_CString*)(ptr))->length + 1] = '\0';
+        return 0;
+    }
+    else if(indx < ((DENX_CString*)(ptr))->length)
+    {
+        if(indx > 0)
+        {
+            char* temp_str = (char*)malloc(indx + 1);
+            for(size_t i = 0; i < indx; i++)
+            {
+                temp_str[i] = ((DENX_CString*)(ptr))->string[i];
+            }
+            temp_str[indx] = c;
+
+            char* after_str = (char*)malloc(((DENX_CString*)(ptr))->length - indx);
+            
+            char* final_rslt = (char*)malloc(((DENX_CString*)(ptr))->capacity);
+
+            strcat_s(final_rslt, indx + 1, temp_str);
+            strcat_s(final_rslt, ((DENX_CString*)(ptr))->length - indx, after_str);
+
+            free(after_str);
+            free(temp_str);
+            after_str = NULL;
+            temp_str = NULL;
+
+            strcpy_s(((DENX_CString*)(ptr))->string, ((DENX_CString*)(ptr))->capacity, final_rslt);
+            free(final_rslt);
+            final_rslt = NULL;
+            return 0;
+        }
+        
+    }
+    return 0;
+}
+
+size_t CStringErase(void* ptr, size_t indx)
+{
+    if(ptr != NULL && ((DENX_CString*)(ptr))->length >= indx && ((DENX_CString*)(ptr))->string != NULL)
+    {
+        ((DENX_CString*)(ptr))->string[indx] = '\0';
+        return 0;
+    }
+    return 1;
+}

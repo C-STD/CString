@@ -63,4 +63,11 @@ size_t CStringReserve(void*, size_t);
 // If the size of the CString already matches the capacity of the CString, nothing is done(0 is returned).
 size_t CStringShrinkToFit(void*);
 
+// Inserts a character at the given location in the CString. Returns 0(character inserted) or 1(error).
+// Any index greater than the length/size/capacity of the CString is interpreted as: insert the character at the end.
+size_t CStringInsert(void*, char, size_t);
+
+// Erases a character at the given location. Returns 0(character deleted) or 1(error, invalid position).
+size_t CStringErase(void*, size_t);
+
 #endif
