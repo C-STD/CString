@@ -70,4 +70,7 @@ size_t CStringInsert(void*, char, size_t);
 // Erases a character at the given location. Returns 0(character deleted) or 1(error, invalid position).
 size_t CStringErase(void*, size_t);
 
+// Insert a single character at the end of the CString. Returns 0(no errors) or 1(error).
+size_t CStringPushBack(void*, char);
+
 #endif

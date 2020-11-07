@@ -387,3 +387,32 @@ size_t CStringErase(void* ptr, size_t indx)
     }
     return 1;
 }
+
+size_t CStringPushBack(void* ptr, char c)
+{
+    if(ptr == NULL)
+    {
+        return 1;
+    }
+
+    size_t orig_size = ((DENX_CString*)(ptr))->size;
+    char* temp_str = (char*)malloc(orig_size + 1);
+
+    memcpy(temp_str, ((DENX_CString*)(ptr))->string, orig_size);
+
+    temp_str[orig_size - 1] = c;
+    temp_str[orig_size] = '\0';
+
+    free(((DENX_CString*)(ptr))->string);
+    ((DENX_CString*)(ptr))->string = NULL;
+
+    ((DENX_CString*)(ptr))->string = (char*)malloc(orig_size + 1);
+    memcpy_s(((DENX_CString*)(ptr))->string, orig_size + 1, temp_str, orig_size + 1);
+    ((DENX_CString*)(ptr))->size = orig_size + 1;
+    ((DENX_CString*)(ptr))->length = strlen(((DENX_CString*)(ptr))->string);
+
+    free(temp_str);
+    temp_str = NULL;
+    
+    return 0;
+}
