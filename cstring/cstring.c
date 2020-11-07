@@ -19,6 +19,8 @@ typedef struct __denx__cstring_object
 
 }denx_cstring;
 
+#define CSTRING_REF(ptr) ((denx_cstring*)(ptr))
+
 void CStringStaticIncreaseCapacity(void*);
 
 void* CStringCreate()
@@ -393,6 +395,25 @@ size_t CStringPushBack(void* ptr, char c)
     if(ptr == NULL)
     {
         return 1;
+    }
+
+    if(CSTRING_REF(ptr)->string == NULL)
+    {
+        CSTRING_REF(ptr)->string = (char*)malloc(2);
+        // error: couldn't allocate memory for string.
+        if(CSTRING_REF(ptr)->string == NULL)
+        {
+            return 1;
+        }
+
+        CSTRING_REF(ptr)->string[0] = c;
+        CSTRING_REF(ptr)->string[1] = '\0';
+
+        CSTRING_REF(ptr)->capacity = 2;
+        CSTRING_REF(ptr)->size = 2;
+        CSTRING_REF(ptr)->length = 1;
+
+        return 0;
     }
 
     size_t orig_size = ((denx_cstring*)(ptr))->size;
