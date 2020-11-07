@@ -20,6 +20,7 @@ typedef struct __denx__cstring_object
 }denx_cstring;
 
 #define CSTRING_REF(ptr) ((denx_cstring*)(ptr))
+#define CSTRING_LEN(ptr) strlen(CSTRING_REF(ptr)->string)
 
 void CStringStaticIncreaseCapacity(void*);
 
@@ -54,32 +55,27 @@ size_t CStringLength(void* ptr)
 {
     if(ptr != NULL)
     {
-        size_t i = 0;
-        if(CSTRING_REF(ptr)->size == 0)
-        {
-            return i;
-        }
-        
-        for(;;)
-        {
-            if(CSTRING_REF(ptr)->string[i++] == '\0')
-            {
-                break;  
-            }
-        }
-        return i;
+        return CSTRING_LEN(ptr);
     }
     return 0;
 }
 
 size_t CStringSize(void* ptr)
 {
-    return CSTRING_REF(ptr)->size;
+    if(ptr != NULL)
+    {
+        return CSTRING_REF(ptr)->size;
+    }
+    return 0;
 }
 
 size_t CStringCapacity(void* ptr)
 {
-    return CSTRING_REF(ptr)->capacity;
+    if(ptr != NULL)
+    {
+        return CSTRING_REF(ptr)->capacity;
+    }
+    return 0;
 }
 
 char* CStringAt(void* ptr, size_t index)
@@ -96,6 +92,8 @@ void CStringClear(void* ptr)
     if(ptr != NULL)
     {
         memset(CSTRING_REF(ptr)->string, 0, CSTRING_REF(ptr)->size);
+        CSTRING_REF(ptr)->size = 1;
+        CSTRING_REF(ptr)->length = 0;
     }
 }
 
@@ -143,7 +141,7 @@ size_t CStringEqual(void* ptr, const char* str)
         }
 
         strcpy_s(CSTRING_REF(ptr)->string, str_len + 1, str);
-        CSTRING_REF(ptr)->length = strlen(CSTRING_REF(ptr)->string);
+        CSTRING_REF(ptr)->length = CSTRING_LEN(ptr);
 
         if(CSTRING_REF(ptr)->length > CSTRING_REF(ptr)->size)
         {
