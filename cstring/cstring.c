@@ -22,6 +22,20 @@ typedef struct __denx__cstring_object
 #define CSTRING_REF(ptr) ((denx_cstring*)(ptr))
 #define CSTRING_LEN(ptr) strlen(CSTRING_REF(ptr)->string)
 
+/* __unix__ is usually defined by compilers targeting Unix systems */
+#if defined(__unix__) || defined(__linux__)
+    #define CSTRING_STRCAT(_Destination, _SizeInBytes, _Source) strcat(_Destination, _Source)
+    #define CSTRING_STRCPY(_Destination, _SizeInBytes, _Source) strcpy(_Destination, _Source)
+    #define CSTRING_MEMCPY(_Destination, _DestinationSize, _Source, _SourceSize) memcpy(_Destination, _Source, _SourceSize)
+/* _Win32 is usually defined by compilers targeting 32 or   64 bit Windows systems */
+#elif defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
+    #define CSTRING_STRCAT(_Destination, _SizeInBytes, _Source) strcat_s(_Destination, _SizeInBytes, _Source)
+    #define CSTRING_STRCPY(_Destination, _SizeInBytes, _Source) strcpy_s(_Destination, _SizeInBytes, _Source)
+    #define CSTRING_MEMCPY(_Destination, _DestinationSize, _Source, _SourceSize) memcpy_s(_Destination, _DestinationSize, _Source, _SourceSize)
+#else
+    #error "unknown compiler or platform. supported platforms are: `Linux` and `Windows`"
+#endif
+
 void CStringStaticIncreaseCapacity(void*);
 
 void* CStringCreate()
@@ -133,7 +147,7 @@ size_t CStringEqual(void* ptr, const char* str)
             CSTRING_REF(ptr)->end = (void*)CSTRING_REF(ptr)->string + str_len;
         }
 
-        strcpy_s(CSTRING_REF(ptr)->string, str_len + 1, str);
+        CSTRING_STRCPY(CSTRING_REF(ptr)->string, str_len + 1, str);
         CSTRING_REF(ptr)->length = str_len;
 
         if(CSTRING_REF(ptr)->length > CSTRING_REF(ptr)->size &&
@@ -170,13 +184,13 @@ void CStringStaticIncreaseCapacity(void* ptr)
         
         size_t ncapacity = ssize + (ssize / 2);
 
-        strcpy_s(temp_str, ssize, CSTRING_REF(ptr)->string);
+        CSTRING_STRCPY(temp_str, ssize, CSTRING_REF(ptr)->string);
 
         free(CSTRING_REF(ptr)->string);
         CSTRING_REF(ptr)->string = NULL;
 
         CSTRING_REF(ptr)->string = (char*)malloc(ssize + (ssize / 2));
-        strcpy_s(CSTRING_REF(ptr)->string, ssize, temp_str);
+        CSTRING_STRCPY(CSTRING_REF(ptr)->string, ssize, temp_str);
         CSTRING_REF(ptr)->capacity = ncapacity;
 
         free(temp_str);
@@ -301,12 +315,12 @@ size_t CStringShrinkToFit(void* ptr)
     size_t old_cap = CSTRING_REF(ptr)->capacity;
 
     char* temp_str = (char*)malloc(new_cap);
-    memcpy_s(temp_str, new_cap, CSTRING_REF(ptr)->string, CSTRING_REF(ptr)->capacity);
+    CSTRING_MEMCPY(temp_str, new_cap, CSTRING_REF(ptr)->string, CSTRING_REF(ptr)->capacity);
 
     free(CSTRING_REF(ptr)->string);
     CSTRING_REF(ptr)->string = NULL;
     CSTRING_REF(ptr)->string = (char*)malloc(new_cap);
-    memcpy_s(CSTRING_REF(ptr)->string, new_cap, temp_str, new_cap);
+    CSTRING_MEMCPY(CSTRING_REF(ptr)->string, new_cap, temp_str, new_cap);
 
     CSTRING_REF(ptr)->capacity = new_cap;
 
@@ -364,15 +378,15 @@ size_t CStringInsert(void* ptr, char c, size_t indx)
             
             char* final_rslt = (char*)malloc(CSTRING_REF(ptr)->capacity);
 
-            strcat_s(final_rslt, indx + 1, temp_str);
-            strcat_s(final_rslt, CSTRING_REF(ptr)->length - indx, after_str);
+            CSTRING_STRCAT(final_rslt, indx + 1, temp_str);
+            CSTRING_STRCAT(final_rslt, CSTRING_REF(ptr)->length - indx, after_str);
 
             free(after_str);
             free(temp_str);
             after_str = NULL;
             temp_str = NULL;
 
-            strcpy_s(CSTRING_REF(ptr)->string, CSTRING_REF(ptr)->capacity, final_rslt);
+            CSTRING_STRCPY(CSTRING_REF(ptr)->string, CSTRING_REF(ptr)->capacity, final_rslt);
             free(final_rslt);
             final_rslt = NULL;
             return 0;
@@ -430,7 +444,7 @@ size_t CStringPushBack(void* ptr, char c)
     CSTRING_REF(ptr)->string = NULL;
 
     CSTRING_REF(ptr)->string = (char*)malloc(orig_size + 1);
-    memcpy_s(CSTRING_REF(ptr)->string, orig_size + 1, temp_str, orig_size + 1);
+    CSTRING_MEMCPY(CSTRING_REF(ptr)->string, orig_size + 1, temp_str, orig_size + 1);
     CSTRING_REF(ptr)->size = orig_size + 1;
     CSTRING_REF(ptr)->length = strlen(CSTRING_REF(ptr)->string);
 
