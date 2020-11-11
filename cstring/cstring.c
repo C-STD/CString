@@ -227,7 +227,7 @@ char* CStringBack(void* ptr)
     {
         if(CSTRING_REF(ptr)->string != NULL && CSTRING_REF(ptr)->size > 0)
         {
-            return (char*)CStringEnd(ptr);
+            return (char*)(CStringEnd(ptr) - 1);
         }
     }
     return NULL;
