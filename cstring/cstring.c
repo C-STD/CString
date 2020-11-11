@@ -100,7 +100,7 @@ void CStringClear(void* ptr)
     if(ptr != NULL)
     {
         memset(CSTRING_REF(ptr)->string, 0, CSTRING_REF(ptr)->size);
-        CSTRING_REF(ptr)->size = 1;
+        CSTRING_REF(ptr)->size = 0;
         CSTRING_REF(ptr)->length = 0;
     }
 }
