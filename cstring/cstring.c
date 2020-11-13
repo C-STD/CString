@@ -488,3 +488,8 @@ size_t CStringPopBack(void* ptr)
     }
     return 1;
 }
+
+size_t CStringAppend(void* ptr, char c)
+{
+    return CStringPushBack(ptr, c);
+}
