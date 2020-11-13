@@ -89,4 +89,7 @@ int CStringCompare(void*, void*);
 // Compares the first character of the CString with the given character. Returns 1(starts with) or 0(not starting with).
 size_t CStringStartsWith(void*, char);
 
+// Compares the last character of the CString with the given character. Returns 1(ends with) or 0(not ending with).
+size_t CStringEndsWith(void*, char);
+
 #endif

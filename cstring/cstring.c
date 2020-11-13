@@ -521,3 +521,12 @@ size_t CStringStartsWith(void* ptr, char c)
     }
     return 0;
 }
+
+size_t CStringEndsWith(void* ptr, char c)
+{
+    if(ptr != NULL && CSTRING_REF(ptr)->string != NULL && CSTRING_REF(ptr)->length > 0)
+    {
+        return CSTRING_REF(ptr)->string[CSTRING_REF(ptr)->length - 1] == c;
+    }
+    return 0;
+}
