@@ -398,11 +398,37 @@ size_t CStringInsert(void* ptr, char c, size_t indx)
 
 size_t CStringErase(void* ptr, size_t indx)
 {
-    if(ptr != NULL && CSTRING_REF(ptr)->length >= indx && CSTRING_REF(ptr)->string != NULL)
+    if(ptr == NULL || indx > CSTRING_REF(ptr)->size)
+    {
+        return 1;
+    }
+
+    if(indx == (CSTRING_REF(ptr)->length - 1))
     {
         CSTRING_REF(ptr)->string[indx] = '\0';
+        CSTRING_REF(ptr)->length--;
+        CSTRING_REF(ptr)->size--;
         return 0;
     }
+    else
+    {
+        if(!indx) { indx = 1; }
+
+        while(indx != 0)
+        {
+            for(size_t i = 1; CSTRING_REF(ptr)->string[i] != '\0' && i < CSTRING_REF(ptr)->length; i++)
+            {
+                CSTRING_REF(ptr)->string[i - 1] = CSTRING_REF(ptr)->string[i];
+                // CSTRING_REF(ptr)->string[indx] = CSTRING_REF(ptr)->string[indx + 1];
+            }
+            indx--;
+        }
+        CSTRING_REF(ptr)->length--;
+        CSTRING_REF(ptr)->size--;
+        CSTRING_REF(ptr)->string[CSTRING_REF(ptr)->length] = '\0';
+        return 0;
+    }
+
     return 1;
 }
 
