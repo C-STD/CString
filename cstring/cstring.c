@@ -479,3 +479,12 @@ size_t CStringPushBack(void* ptr, char c)
 
     return 0;
 }
+
+size_t CStringPopBack(void* ptr)
+{
+    if(ptr != NULL)
+    {
+        return CStringErase(ptr, CStringLength(ptr) - 1);
+    }
+    return 1;
+}

@@ -73,4 +73,7 @@ size_t CStringErase(void*, size_t);
 // Insert a single character at the end of the CString. Returns 0(no errors) or 1(error).
 size_t CStringPushBack(void*, char);
 
+// Pops back the last character. Effectively erases the last character of the CString. Returns 0(no errors) or 1(error).
+size_t CStringPopBack(void*);
+
 #endif
