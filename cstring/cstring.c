@@ -493,3 +493,22 @@ size_t CStringAppend(void* ptr, char c)
 {
     return CStringPushBack(ptr, c);
 }
+
+int CStringCompare(void* ptr0, void* ptr1)
+{
+    if(ptr0 == NULL || ptr1 == NULL)
+    {
+        return -1;
+    }
+
+    while(*CSTRING_REF(ptr0)->string)
+    {
+        if(*CSTRING_REF(ptr0)->string != *CSTRING_REF(ptr1)->string)
+        {
+            break;
+        }
+        CSTRING_REF(ptr0)->string++;
+        CSTRING_REF(ptr1)->string;
+    }
+    return *(const unsigned char*)CSTRING_REF(ptr0)->string - *(const unsigned char*)CSTRING_REF(ptr1)->string;
+}

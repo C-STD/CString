@@ -79,4 +79,11 @@ size_t CStringPopBack(void*);
 // Insert a single character at the end of the CString. Returns 0(no errors) or 1(error).
 size_t CStringAppend(void*, char);
 
+// Compares the two CStrings. Returns 0, N<0 or N>0.
+// - N<0 if the first character that does not match has a lower value in the first CString than in the second CString.
+// - 0 if the contents of both CStrings are equal.
+// - N>0 if the first character that does not match has a greater value in the first CString than in the second CString.
+// - If either the first CString or the second CString is a NULL pointer, -1 is returned.
+int CStringCompare(void*, void*);
+
 #endif
