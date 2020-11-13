@@ -512,3 +512,12 @@ int CStringCompare(void* ptr0, void* ptr1)
     }
     return *(const unsigned char*)CSTRING_REF(ptr0)->string - *(const unsigned char*)CSTRING_REF(ptr1)->string;
 }
+
+size_t CStringStartsWith(void* ptr, char c)
+{
+    if(ptr != NULL && CSTRING_REF(ptr)->string != NULL && CSTRING_REF(ptr)->length > 0)
+    {
+        return CSTRING_REF(ptr)->string[0] == c;
+    }
+    return 0;
+}

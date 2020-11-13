@@ -86,4 +86,7 @@ size_t CStringAppend(void*, char);
 // - If either the first CString or the second CString is a NULL pointer, -1 is returned.
 int CStringCompare(void*, void*);
 
+// Compares the first character of the CString with the given character. Returns 1(starts with) or 0(not starting with).
+size_t CStringStartsWith(void*, char);
+
 #endif
