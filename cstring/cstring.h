@@ -92,4 +92,8 @@ size_t CStringStartsWith(void*, char);
 // Compares the last character of the CString with the given character. Returns 1(ends with) or 0(not ending with).
 size_t CStringEndsWith(void*, char);
 
+// Replaces the portion of the string that the begins at the given position and spans for the given string's lenght.
+// Returns the number of bytes written on the CString.
+size_t CStringReplace(void*, const char*, size_t, size_t);
+
 #endif
