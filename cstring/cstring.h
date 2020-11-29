@@ -96,4 +96,9 @@ size_t CStringEndsWith(void*, char);
 // Returns the number of bytes written on the CString.
 size_t CStringReplace(void*, const char*, size_t, size_t);
 
+// Returns a CString object with its value initialized to a copy of a substring
+// of the given CString object.
+// Returns a CString object(valid positions) or NULL(invalid positions or NULL CString object).
+void* CStringSubStr(void*, size_t, size_t);
+
 #endif

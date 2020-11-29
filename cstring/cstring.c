@@ -552,3 +552,54 @@ size_t CStringReplace(void* ptr, const char* str, size_t pos, size_t len)
     }
     return 0;
 }
+
+void* CStringSubStr(void* ptr, size_t start, size_t end)
+{
+    if(ptr != NULL)
+    {
+        denx_cstring* obj = (denx_cstring*)malloc(sizeof(denx_cstring));
+        if(obj == NULL)
+        {
+            return NULL;
+        }
+
+        if(!end)
+        {
+            end = CSTRING_REF(ptr)->size;
+        }
+
+        SUBSTR:
+        if(start < end)
+        {
+            CSTRING_REF(obj)->string = (char*)calloc(1, end - start + 1);
+            if(CSTRING_REF(obj)->string == NULL)
+            {
+                return NULL;
+            }
+
+            CSTRING_REF(obj)->size = end - start + 1;
+            CSTRING_REF(obj)->length = end - start;
+            CSTRING_REF(obj)->capacity = CSTRING_REF(obj)->size;
+
+            if(CSTRING_REF(obj)->string == NULL)
+            {
+                return NULL;
+            }
+
+            size_t lindex = 0;
+            while(start != end)
+            {
+                CSTRING_REF(obj)->string[lindex++] = CSTRING_REF(ptr)->string[start++];
+            }
+        }
+        else if(end < start)
+        {
+            start = start + end;
+            end = start - end;
+            start = start - end;
+            goto SUBSTR;
+        }
+        return (void*)obj;
+    }
+    return NULL;
+}
