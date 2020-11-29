@@ -535,10 +535,14 @@ size_t CStringReplace(void* ptr, const char* str, size_t pos, size_t len)
 {
     if(ptr != NULL && str != NULL && len > 0)
     {
+        if(len > CSTRING_REF(ptr)->length)
+        {
+            return 0;
+        }
         if(CSTRING_REF(ptr)->string != NULL && str != NULL)
         {
             size_t lindex = 0;
-            while(CSTRING_REF(ptr)->string[lindex + pos] != '\0' && str[lindex] != '\0' && lindex < (len - 1))
+            while(CSTRING_REF(ptr)->string[lindex + pos] != '\0' && str[lindex] != '\0' && lindex <= (len - 1))
             {
                 CSTRING_REF(ptr)->string[lindex + pos] = str[lindex];
                 lindex++;
