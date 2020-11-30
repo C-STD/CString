@@ -28,6 +28,7 @@ set(TESTS_FILE
     cstring_size_test.c
     cstring_replace_test.c
     cstring_substr_test.c
+    cstring_copy_test.c
 )
 
 foreach(CSTRING_TEST_FILE ${TESTS_FILE})
