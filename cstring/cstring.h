@@ -101,4 +101,9 @@ size_t CStringReplace(void*, const char*, size_t, size_t);
 // Returns a CString object(valid positions) or NULL(invalid positions or NULL CString object).
 void* CStringSubStr(void*, size_t, size_t);
 
+// Copies the content of the second CString object to the first CString object.
+// Returns the number of bytes copied.
+// Note: The content of the first CString object is deleted.
+size_t CStringCopy(void*, void*);
+
 #endif

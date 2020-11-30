@@ -603,3 +603,19 @@ void* CStringSubStr(void* ptr, size_t start, size_t end)
     }
     return NULL;
 }
+
+size_t CStringCopy(void* ptr, void* cptr)
+{
+    if(ptr == NULL || cptr == NULL)
+    {
+        return 0;
+    }
+
+    CSTRING_REF(ptr)->string = (char*)calloc(1, CSTRING_REF(cptr)->capacity);
+    CSTRING_REF(ptr)->capacity = CSTRING_REF(cptr)->capacity;
+    CSTRING_REF(ptr)->size = CSTRING_REF(cptr)->size;
+    CSTRING_REF(ptr)->length = CSTRING_REF(cptr)->length;
+    CSTRING_STRCPY(CSTRING_REF(ptr)->string, CSTRING_REF(cptr)->size, CSTRING_REF(cptr)->string);
+    
+    return CSTRING_REF(ptr)->size;
+}
