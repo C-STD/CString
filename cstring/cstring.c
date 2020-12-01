@@ -619,3 +619,56 @@ size_t CStringCopy(void* ptr, void* cptr)
     
     return CSTRING_REF(ptr)->size;
 }
+
+size_t CStringResize(void* ptr, size_t sz, char c)
+{
+    if(ptr != NULL)
+    {
+        if(CSTRING_REF(ptr)->string == NULL || !CSTRING_REF(ptr)->size || !CSTRING_REF(ptr)->length)
+        {
+            if(CSTRING_REF(ptr)->string != NULL)
+            {
+                free(CSTRING_REF(ptr)->string);
+            }
+
+            CSTRING_REF(ptr)->string = (char*)calloc(1, sz);
+            CSTRING_REF(ptr)->size = sz;
+            CSTRING_REF(ptr)->capacity = sz;
+            CSTRING_REF(ptr)->length = 0;
+            return 0;
+        }
+        else if(sz > CSTRING_REF(ptr)->size)
+        {
+            char* temp_string = malloc(CSTRING_REF(ptr)->size);
+            CSTRING_STRCPY(temp_string, CSTRING_REF(ptr)->size, CSTRING_REF(ptr)->string);
+
+            free(CSTRING_REF(ptr)->string);
+            CSTRING_REF(ptr)->string = (char*)calloc(1, sz);
+            CSTRING_STRCPY(CSTRING_REF(ptr)->string, CSTRING_REF(ptr)->length, temp_string);
+
+            for(size_t i = CSTRING_REF(ptr)->size; i < sz; i++)
+            {
+                CSTRING_REF(ptr)->string[i] = c;
+            }
+
+            CSTRING_REF(ptr)->size = sz;
+            CSTRING_REF(ptr)->length = CSTRING_LEN(ptr);
+            CSTRING_REF(ptr)->capacity = sz;
+
+            free(temp_string);
+            temp_string = NULL;
+        }
+        else if(sz < CSTRING_REF(ptr)->size)
+        {
+            CSTRING_REF(ptr)->string[sz - 1] = c;
+            for(size_t i = sz; i < CSTRING_REF(ptr)->size; i++)
+            {
+                CSTRING_REF(ptr)->string[i] = c;
+            }
+
+            CSTRING_REF(ptr)->size = sz;
+        }
+        return 0;
+    }
+    return 1;
+}

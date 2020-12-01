@@ -106,4 +106,10 @@ void* CStringSubStr(void*, size_t, size_t);
 // Note: The content of the first CString object is deleted.
 size_t CStringCopy(void*, void*);
 
+// Resizes the CString to a length of N characters.
+// If N is smaller than the current CString length, the current value is shortened to its first N character , removing the characters beyond the Nth.
+// If n is greater than the current CString length, the current content is extended by inserting at the end as many characters as needed to reach a size of N. New elements are all initialized with the value of the given character.
+// Returns 0(no errors) or 1(error)
+size_t CStringResize(void*, size_t, char);
+
 #endif
