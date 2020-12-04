@@ -112,4 +112,8 @@ size_t CStringCopy(void*, void*);
 // Returns 0(no errors) or 1(error)
 size_t CStringResize(void*, size_t, char);
 
+// Swaps the content of two CStrings.
+// Returns 0(no errors) or 1(error).
+size_t CStringSwap(void*, void*);
+
 #endif

@@ -672,3 +672,55 @@ size_t CStringResize(void* ptr, size_t sz, char c)
     }
     return 1;
 }
+
+size_t CStringSwap(void* ptr0, void* ptr1)
+{
+    if(ptr0 != NULL && ptr1 != NULL)
+    {
+        // Swap only if both strings are allocated.
+        if(CSTRING_REF(ptr0)->string != NULL && CSTRING_REF(ptr1)->string != NULL)
+        {
+            char* temp_string0 = (char*)calloc(1, CSTRING_REF(ptr0)->capacity);
+            char* temp_string1 = (char*)calloc(1, CSTRING_REF(ptr1)->capacity);
+
+            size_t cap0 = CSTRING_REF(ptr0)->capacity;
+            size_t cap1 = CSTRING_REF(ptr1)->capacity;
+
+            size_t sz0 = CSTRING_REF(ptr0)->size;
+            size_t sz1 = CSTRING_REF(ptr1)->size;
+
+            size_t len0 = CSTRING_REF(ptr0)->length;
+            size_t len1 = CSTRING_REF(ptr1)->length;
+
+            free(CSTRING_REF(ptr0)->string);
+            free(CSTRING_REF(ptr1)->string);
+
+            CSTRING_REF(ptr0)->string = (char*)calloc(1, cap1);
+            CSTRING_REF(ptr1)->string = (char*)calloc(1, cap0);
+
+            CSTRING_STRCPY(CSTRING_REF(ptr0)->string, len1, temp_string1);
+            CSTRING_STRCPY(CSTRING_REF(ptr1)->string, len0, temp_string0);
+
+            CSTRING_REF(ptr0)->capacity = cap1;
+            CSTRING_REF(ptr1)->capacity = cap0;
+
+            CSTRING_REF(ptr0)->size = sz1;
+            CSTRING_REF(ptr1)->size = sz0;
+
+            CSTRING_REF(ptr0)->length = CSTRING_LEN(CSTRING_REF(ptr0)->string);
+            CSTRING_REF(ptr1)->length = CSTRING_LEN(CSTRING_REF(ptr1)->string);
+
+            // Both swaps must match with the swapped string!
+            if(strcmp(CSTRING_REF(ptr0)->string, temp_string1) || strcmp(CSTRING_REF(ptr1)->string, temp_string0))
+            {
+                return 1;
+            }
+
+            free(temp_string0);
+            free(temp_string1);
+
+            return 0;
+        }
+    }
+    return 1;
+}
