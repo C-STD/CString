@@ -1,0 +1,3 @@
+[submodule "vendors/check"]
+	path = vendors/check
+	url = https://github.com/libcheck/check
