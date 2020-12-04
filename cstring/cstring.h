@@ -3,6 +3,8 @@
 
 #include <stdio.h>
 
+#define CSTRING_NPOS ((size_t)-1)
+
 // Create an empty CString object and returns a pointer to its data.
 void* CStringCreate();
 
@@ -115,5 +117,9 @@ size_t CStringResize(void*, size_t, char);
 // Swaps the content of two CStrings.
 // Returns 0(no errors) or 1(error).
 size_t CStringSwap(void*, void*);
+
+// Finds the first sub-strings equal to the given character sequence.
+// Returns the position of the first match or `CSTRING_NPOS` if no match.
+size_t CStringFind(void*, const char*);
 
 #endif

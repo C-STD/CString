@@ -724,3 +724,41 @@ size_t CStringSwap(void* ptr0, void* ptr1)
     }
     return 1;
 }
+
+size_t CStringFind(void* ptr, const char* chrs)
+{
+    if(ptr == NULL || chrs == NULL)
+    {
+        return CSTRING_NPOS;
+    }
+    else if(!strlen(chrs))
+    {
+        return CSTRING_NPOS;
+    }
+
+    size_t chrs_len = strlen(chrs);
+    size_t index = 0;
+    size_t cindex = 0;
+
+    do
+    {
+        if(chrs[cindex] != CSTRING_REF(ptr)->string[index])
+        {
+            cindex = 0;
+        }
+        if(cindex == chrs_len - 1)
+        {
+            break;
+        }
+        cindex++;
+        index++;
+    }while(index < CSTRING_REF(ptr)->length);
+
+    if(index > CSTRING_REF(ptr)->length)
+    {
+        return CSTRING_NPOS;
+    }
+
+    index -= (chrs_len - 1);
+    return index;
+}
