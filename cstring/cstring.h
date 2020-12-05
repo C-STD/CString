@@ -122,4 +122,9 @@ size_t CStringSwap(void*, void*);
 // Returns the position of the first match or `CSTRING_NPOS` if no match.
 size_t CStringFind(void*, const char*);
 
+// Find the first sub-string equal to the given character sequence starting from the end of the
+// CString.
+// REturns the position of the first match or `CSTRING_NPOS` if no match.
+size_t CStringRFind(void*, const char*);
+
 #endif

@@ -762,3 +762,35 @@ size_t CStringFind(void* ptr, const char* chrs)
     index -= (chrs_len - 1);
     return index;
 }
+
+// !TODO: This function does not work properly. Needs to be re-thinked/re-written.
+// !>BUG
+size_t CStringRFind(void* ptr, const char* chrs)
+{
+    if(ptr == NULL || chrs == NULL)
+    {
+        return CSTRING_NPOS;
+    }
+    else if(!strlen(chrs))
+    {
+        return CSTRING_NPOS;
+    }
+
+    size_t str_len = CSTRING_REF(ptr)->length;
+    size_t chr_len = strlen(chrs);
+
+    for(size_t i = (str_len - 1); i >= 0; i--)
+    {
+        int j = (chr_len - 1);
+        while(j < chr_len && CSTRING_REF(ptr)->string[i-j] == chrs[j])
+        {
+            j--;
+        }
+        if(j < 0)
+        {
+            return i;
+        }
+
+    }
+    return -1;
+}
