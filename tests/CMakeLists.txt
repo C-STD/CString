@@ -34,5 +34,4 @@ set(TESTS_FILE
 foreach(CSTRING_TEST_FILE ${TESTS_FILE})
     string(REPLACE ".c" "" CSTRING_TEST_FILE_NAME ${CSTRING_TEST_FILE})
     add_executable(${CSTRING_TEST_FILE_NAME} ${CSTRING_TEST_FILE})
-    target_link_libraries(${CSTRING_TEST_FILE_NAME} CString)
 endforeach(CSTRING_TEST_FILE ${CSTRING_TESTS})
