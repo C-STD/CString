@@ -828,3 +828,29 @@ size_t CStringFindFirstNotOf(void* ptr, const char* chrs)
     }
     return -1;
 }
+
+// !TODO: Like `CStringFindLastOf`, this function doesn't actually work
+// !BUG
+size_t CStringFindLastNotOf(void* ptr, const char* chrs)
+{
+    if(ptr == NULL || CSTRING_REF(ptr)->string == NULL || chrs == NULL)
+    {
+        return -1;
+    }
+
+    size_t str_len = strlen(CSTRING_REF(ptr)->string);
+    size_t chrs_len = strlen(chrs);
+    for(int i = str_len - chrs_len; i >= 0; i--)
+    {
+        size_t j = chrs_len - 1;
+        if(CSTRING_REF(ptr)->string[i+j] != chrs[j])
+        {
+            return i;
+        }
+        while(j > 0 && CSTRING_REF(ptr)->string[i+j] == chrs[j])
+        {
+            j--;
+        }
+    }
+    return -1;
+}

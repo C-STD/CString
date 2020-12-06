@@ -140,4 +140,9 @@ size_t CStringFindLastOf(void*, const char*);
 // Returns the position of the first non-matching character or `CSTRING_NPOS` if all matched.
 size_t CStringFindFirstNotOf(void*, const char*);
 
+// Finds the first character not equal to the given character sequence starting from the end of the
+// CString.
+// Returns the position of the first non-matching character or `CSTRING_NPOS` if all matched.
+size_t CStringFindLastNotOf(void*, const char*);
+
 #endif
