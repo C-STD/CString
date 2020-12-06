@@ -131,4 +131,9 @@ size_t CStringRFind(void*, const char*);
 // Returns the position of the first match or `CSTRING_NPOS` if no match.
 size_t CStringFindFirstOf(void*, const char*);
 
+// Find the first sub-strings equal to the given character sequence starting from the end of the
+// CString.
+// Returns the position of the first match or `CSTRING_NPOS` if no match.
+size_t CStringFindLastOf(void*, const char*);
+
 #endif

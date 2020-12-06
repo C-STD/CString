@@ -799,3 +799,8 @@ size_t CStringFindFirstOf(void* ptr, const char* chrs)
 {
     return CStringFind(ptr, chrs);
 }
+
+size_t CStringFindLastOf(void* ptr, const char* chrs)
+{
+    return CStringRFind(ptr, chrs);
+}
