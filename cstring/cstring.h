@@ -127,4 +127,8 @@ size_t CStringFind(void*, const char*);
 // REturns the position of the first match or `CSTRING_NPOS` if no match.
 size_t CStringRFind(void*, const char*);
 
+// Finds the first sub-strings equal to the given character sequence
+// Returns the position of the first match or `CSTRING_NPOS` if no match.
+size_t CStringFindFirstOf(void*, const char*);
+
 #endif
