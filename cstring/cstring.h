@@ -267,8 +267,7 @@ void CStringClear(void* ptr)
 {
     if(ptr != NULL)
     {
-        // TODO: Clear the string using the `capacity` instead of the size.
-        memset(CSTRING_REF(ptr)->string, 0, CSTRING_REF(ptr)->size);
+        memset(CSTRING_REF(ptr)->string, 0, CSTRING_REF(ptr)->capacity);
         CSTRING_REF(ptr)->size = 0;
         CSTRING_REF(ptr)->length = 0;
     }
